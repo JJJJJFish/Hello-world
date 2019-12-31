@@ -1,0 +1,83 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConcreteDecorator
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ConcreteComponent c = new ConcreteComponent();
+            ConcretedecoratorA concretedecoratorA = new ConcretedecoratorA();
+            ConcretedecoratorB concretedecoratorB = new ConcretedecoratorB();
+            ConcretedecoratorC concretedecoratorC = new ConcretedecoratorC();
+
+            concretedecoratorA.SetComponent(c);
+            concretedecoratorB.SetComponent(concretedecoratorA);
+            concretedecoratorC.SetComponent(concretedecoratorB);
+            concretedecoratorC.Operation();
+        }
+    }
+    abstract class Component
+    {
+        public abstract void Operation();
+    }
+    class ConcreteComponent : Component
+    {
+        public override void Operation()
+        {
+            Console.WriteLine("目标对象");
+        }
+    }
+    abstract class Decorator: Component
+    {
+        protected Component component;
+        public void SetComponent(Component component)
+        {
+            this.component = component;
+            Console.WriteLine("设置目标对象"+component);
+
+        }
+        public override void Operation()
+        {
+            if (component !=null)
+            {
+                component.Operation();
+            }
+        }
+    }
+    class ConcretedecoratorA : Decorator
+    {
+        private string addedState;
+        public override void Operation()
+        {
+            base.Operation();
+            addedState = "New State";
+            Console.WriteLine("具体装饰对象A的操作");
+        }
+    }
+    class ConcretedecoratorB : Decorator
+    {
+        public override void Operation()
+        {
+            base.Operation();
+            AddedBehavior();
+            Console.WriteLine("具体装饰对象B的操作");
+        }
+        private void AddedBehavior()
+        {
+            Console.WriteLine("对象B特别的操作");
+        }
+    }
+    class ConcretedecoratorC : Decorator
+    {
+        public override void Operation()
+        {
+            base.Operation();
+            Console.WriteLine("具体装饰对象C的操作");
+        }
+    }
+}
